@@ -2,11 +2,13 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QMenu, QMenuBar, QAction, QLabel, \
     QLineEdit, QPushButton
 from layout.user_list_table import UserListTable
+from core.user_service import UserService
+from layout.user_info_dialog import UserInfoDialog
 
 
 # # Delete user alert:
-# delete_user_alert = QMessageBox(QMessageBox.Warning, 'WARNING!', 'Are you sure you want to delete this user? '
-#                                                                  'This action cannot be undone.')
+# delete_user_alert = QMessageBox(QMessageBox.Warning, 'WARNING!',
+# 'Are you sure you want to delete this user? This action cannot be undone.')
 # delete_user_alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
 #
 # create_user_window = UserInfoWindow('Create new user')
@@ -29,7 +31,7 @@ from layout.user_list_table import UserListTable
 
 # Main screen:
 class UserManagementWindow(QWidget):
-    def __init__(self, user_service):
+    def __init__(self, user_service: UserService):
         super().__init__()
         # setting window properties:
         self.box = QVBoxLayout()
@@ -50,6 +52,10 @@ class UserManagementWindow(QWidget):
         about_section = QAction('&About', help_menu)
         help_menu.addAction(about_section)
 
+    def create_user_window(self):
+        create_user_widget = UserInfoDialog('Create new user', self.user_service, self)
+        create_user_widget.start()
+
     def __init_box(self):
         # Outer layout box:
         title_lbl = QLabel('User Management System')
@@ -63,8 +69,7 @@ class UserManagementWindow(QWidget):
         # Create user button:
         create_user_btn = QPushButton('Create new user')
         create_user_btn.setStyleSheet('background-color: #269900; color: white; font-weight: bold')
-        # create_user_btn.clicked.connect(new_user_window)
-
+        create_user_btn.clicked.connect(self.create_user_window)
         #     Search user field:
         search_field = QLineEdit()
         search_field.setPlaceholderText('Type to search user...')

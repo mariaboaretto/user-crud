@@ -16,6 +16,21 @@ class UserService:
             if user.get_email() == email:
                 raise Exception('Email already exists: {}'.format(email))
 
+            if first_name is None or first_name == '':
+                raise Exception("Please insert user's first name")
+
+            if last_name is None or last_name == '':
+                raise Exception("Please insert user's last name")
+
+            if email is None or email == '':
+                raise Exception("Please insert user's email")
+
+            if username is None or username == '':
+                raise Exception("Please insert user's username")
+
+            if password is None or password == '':
+                raise Exception("Please insert user's password")
+
         new_user = User(first_name, last_name, email, username, password)
         self.users.append(new_user)
 
