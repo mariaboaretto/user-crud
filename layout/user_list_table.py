@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTableWidget, QHeaderView, QPushButton, QHBoxLayout, QWidget, QTableWidgetItem
 from core.user_service import UserService
-from layout.user_info_dialog import UserInfoDialog
+# from layout.user_info_dialog import UserInfoDialog
 
 
 class UserListTable(QTableWidget):

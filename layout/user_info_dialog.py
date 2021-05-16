@@ -3,11 +3,12 @@ from core.user_service import UserService
 
 
 class UserInfoDialog(QDialog):
-    def __init__(self, window_title: str, user_service: UserService, parent=None):
+    def __init__(self, window_title: str, user_service: UserService, parent=None, success_function=None):
         super().__init__(parent)
         self.window_title = window_title
         self.form_layout = QFormLayout()
         self.user_service = user_service
+        self.success_function = success_function
 
         self.__init_widget()
         self.__init_form_layout()
@@ -52,8 +53,21 @@ class UserInfoDialog(QDialog):
 
         try:
             self.user_service.create_user(first_name, last_name, email, username, password)
+            return_value = QMessageBox.information(self, 'Successful!', 'User created successfully', QMessageBox.Ok)
+
+            if return_value == QMessageBox.Ok:
+                self.close()
+
+                if self.success_function is not None:
+                    self.success_function()
+
         except Exception as e:
-            print('{}'.format(e))
+            error_msg = QMessageBox(parent=self)
+            error_msg.setWindowTitle('ERROR!')
+            error_msg.setIcon(QMessageBox.Critical)
+            error_msg.setText('Error - {}'.format(e))
+            error_msg.setStandardButtons(QMessageBox.Ok)
+            error_msg.show()
 
     def start(self):
         self.show()

@@ -1,5 +1,5 @@
 # from layout.user_info_window import UserInfoWindow
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QMenu, QMenuBar, QAction, QLabel, \
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QMenu, QMenuBar, QAction, QLabel, \
     QLineEdit, QPushButton
 from layout.user_list_table import UserListTable
 from core.user_service import UserService
@@ -10,20 +10,6 @@ from layout.user_info_dialog import UserInfoDialog
 # delete_user_alert = QMessageBox(QMessageBox.Warning, 'WARNING!',
 # 'Are you sure you want to delete this user? This action cannot be undone.')
 # delete_user_alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-#
-# create_user_window = UserInfoWindow('Create new user')
-# edit_user_window = UserInfoWindow('Edit user info')
-#
-#
-# # Update user info window:
-# def edit_window():
-#     edit_user_window.show_window()
-#
-#
-# # Create user info window:
-# def new_user_window():
-#     create_user_window.show_window()
-#
 #
 # def delete_user_window():
 #     delete_user_alert.show()
@@ -36,6 +22,7 @@ class UserManagementWindow(QWidget):
         # setting window properties:
         self.box = QVBoxLayout()
         self.user_service = user_service
+        self.table = UserListTable(self.user_service)
 
         # setting up window
         self.__init_widget()
@@ -53,7 +40,7 @@ class UserManagementWindow(QWidget):
         help_menu.addAction(about_section)
 
     def create_user_window(self):
-        create_user_widget = UserInfoDialog('Create new user', self.user_service, self)
+        create_user_widget = UserInfoDialog('Create new user', self.user_service, self, self.table.reload_user_list)
         create_user_widget.start()
 
     def __init_box(self):
@@ -81,8 +68,7 @@ class UserManagementWindow(QWidget):
         user_info_layout.setContentsMargins(10, 0, 10, 10)
         user_lst_lbl = QLabel('User list:')
         user_info_layout.addWidget(user_lst_lbl)
-        table = UserListTable(self.user_service)
-        user_info_layout.addWidget(table)
+        user_info_layout.addWidget(self.table)
 
         # Adding to outer layout:
         self.box.addLayout(h_box)
