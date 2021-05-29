@@ -54,8 +54,9 @@ class UserService:
             if user.get_email() == email:
                 return user
 
-    def set_new_info(self, user: User, searched_term: str, first_name: str = None, last_name: str = None,
-                     password: str = None):
+    @staticmethod
+    def __set_new_info(user: User, searched_term: str, first_name: str = None, last_name: str = None,
+                       password: str = None):
         if user is None:
             raise Exception('User does not exist: {}'.format(searched_term))
 
@@ -72,9 +73,9 @@ class UserService:
                                 password: str = None):
         user = self.get_user_by_username(username)
 
-        self.set_new_info(user, username, first_name, last_name, password)
+        self.__set_new_info(user, username, first_name, last_name, password)
 
     def update_user_by_email(self, email: str, first_name: str = None, last_name: str = None, password: str = None):
         user = self.get_user_by_email(email)
 
-        self.set_new_info(user, email, first_name, last_name, password)
+        self.__set_new_info(user, email, first_name, last_name, password)

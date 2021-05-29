@@ -15,6 +15,15 @@ class User:
     def get_full_name(self) -> str:
         return '{} {}'.format(self.first_name, self.last_name)
 
+    def get_first_name(self) -> str:
+        return self.first_name
+
+    def get_last_name(self) -> str:
+        return self.last_name
+
+    def get_password(self) -> str:
+        return self.password
+
     def set_first_name(self, first_name):
         self.first_name = first_name
 

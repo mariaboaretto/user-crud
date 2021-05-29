@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTableWidget, QHeaderView, QPushButton, QHBoxLayout, QWidget, QTableWidgetItem
 from core.user_service import UserService
-# from layout.user_info_dialog import UserInfoDialog
+from layout.user_info_dialog import UserInfoDialog
 
 
 class UserListTable(QTableWidget):
@@ -25,18 +25,21 @@ class UserListTable(QTableWidget):
         self.verticalHeader().setDefaultSectionSize(45)
 
         for user in user_list:
+            edit_user_window = UserInfoDialog('Edit user', self.user_service, self, user=user)
+
             # Action buttons:
             delete_btn = QPushButton('Delete')
             delete_btn.setStyleSheet('background-color: #b30000; color: white; font-weight: bold')
             edit_btn = QPushButton('Edit')
+            edit_btn.clicked.connect(edit_user_window.start)
             edit_btn.setStyleSheet('background-color: #0077b3; color: white; font-weight: bold')
-            # edit_user_window = UserInfoDialog('Edit user', self.user_service)
-            # edit_btn.clicked.connect(lambda: edit_user_window.start())
+
             button_layout = QHBoxLayout()
             button_layout.addWidget(edit_btn)
             button_layout.addWidget(delete_btn)
             buttons_widget = QWidget()
             buttons_widget.setLayout(button_layout)
+
             self.setCellWidget(row, 3, buttons_widget)
             # Loading users in table:
             self.setItem(row, 0, QTableWidgetItem(user.get_full_name()))
