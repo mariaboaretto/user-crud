@@ -25,7 +25,8 @@ class UserListTable(QTableWidget):
         self.verticalHeader().setDefaultSectionSize(45)
 
         for user in user_list:
-            edit_user_window = UserInfoDialog('Edit user', self.user_service, self, user=user)
+            edit_user_window = UserInfoDialog('Edit user', self.user_service, self, user=user,
+                                              success_function=self.reload_user_list)
 
             # Action buttons:
             delete_btn = QPushButton('Delete')

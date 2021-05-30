@@ -3,7 +3,7 @@ from core.user_service import UserService
 
 
 class UserInfoDialog(QDialog):
-    def __init__(self, window_title: str, user_service: UserService, parent=None, success_function=None, user=None,):
+    def __init__(self, window_title: str, user_service: UserService, parent=None, success_function=None, user=None):
         super().__init__(parent)
         self.window_title = window_title
         self.form_layout = QFormLayout()
@@ -33,14 +33,17 @@ class UserInfoDialog(QDialog):
         password_field = QLineEdit()
         password_field.setEchoMode(QLineEdit.Password)
 
+        # Filling fields in edit user window:
+
         if self.user is not None:
+            uneditable_field_style = 'background-color: #d9d9d9; color: #4d4d4d'
             first_name_field.setText(self.user.get_first_name())
             last_name_field.setText(self.user.get_last_name())
             email_field.setText(self.user.get_email())
             email_field.setReadOnly(True)
-            email_field.setStyleSheet('background-color: #d9d9d9; color: #4d4d4d')
+            email_field.setStyleSheet(uneditable_field_style)
             username_field.setText(self.user.get_username())
-            username_field.setStyleSheet('background-color: #d9d9d9; color: #4d4d4d')
+            username_field.setStyleSheet(uneditable_field_style)
             username_field.setReadOnly(True)
             password_field.setText(self.user.get_password())
 
@@ -53,33 +56,43 @@ class UserInfoDialog(QDialog):
         self.setLayout(self.form_layout)
 
         buttons.rejected.connect(self.reject)
-        # buttons.accepted.connect(lambda: self.create_user(first_name_field, last_name_field, email_field,
-    #                                                       username_field, password_field))
-    #
-    # def create_user(self, first_name_field, last_name_field, email_field, username_field, password_field):
-    #     first_name = first_name_field.text()
-    #     last_name = last_name_field.text()
-    #     email = email_field.text()
-    #     username = username_field.text()
-    #     password = password_field.text()
-    #
-    #     try:
-    #         self.user_service.create_user(first_name, last_name, email, username, password)
-    #         return_value = QMessageBox.information(self, 'Successful!', 'User created successfully', QMessageBox.Ok)
-    #
-    #         if return_value == QMessageBox.Ok:
-    #             self.close()
-    #
-    #             if self.success_function is not None:
-    #                 self.success_function()
-    #
-    #     except Exception as e:
-    #         error_msg = QMessageBox(parent=self)
-    #         error_msg.setWindowTitle('ERROR!')
-    #         error_msg.setIcon(QMessageBox.Critical)
-    #         error_msg.setText('Error - {}'.format(e))
-    #         error_msg.setStandardButtons(QMessageBox.Ok)
-    #         error_msg.show()
+        buttons.accepted.connect(lambda: self.create_or_edit_user(first_name_field, last_name_field, email_field,
+                                                                  username_field, password_field))
+
+    def create_or_edit_user(self, first_name_field, last_name_field, email_field, username_field, password_field):
+        first_name = first_name_field.text()
+        last_name = last_name_field.text()
+        email = email_field.text()
+        username = username_field.text()
+        password = password_field.text()
+
+        try:
+
+            msg = ""
+
+            if self.user is None:
+                self.user_service.create_user(first_name, last_name, email, username, password)
+                msg = 'User created successfully!'
+
+            else:
+                self.user_service.update_user_by_username(username, first_name, last_name, password)
+                msg = 'User updated successfully!'
+
+            return_value = QMessageBox.information(self, 'Successful!', msg, QMessageBox.Ok)
+
+            if return_value == QMessageBox.Ok:
+                self.close()
+
+            if self.success_function is not None:
+                self.success_function()
+
+        except Exception as e:
+            error_msg = QMessageBox(parent=self)
+            error_msg.setWindowTitle('ERROR!')
+            error_msg.setIcon(QMessageBox.Critical)
+            error_msg.setText('Error - {}'.format(e))
+            error_msg.setStandardButtons(QMessageBox.Ok)
+            error_msg.show()
 
     def start(self):
         self.show()

@@ -55,19 +55,23 @@ class UserService:
                 return user
 
     @staticmethod
-    def __set_new_info(user: User, searched_term: str, first_name: str = None, last_name: str = None,
-                       password: str = None):
+    def __set_new_info(user: User, searched_term: str, first_name: str, last_name: str,
+                       password: str):
         if user is None:
             raise Exception('User does not exist: {}'.format(searched_term))
 
-        if first_name is not None:
-            user.set_first_name(first_name)
+        if first_name is None or first_name == '':
+            raise Exception("Please insert user's first name")
 
-        if last_name is not None:
-            user.set_last_name(last_name)
+        if last_name is None or last_name == '':
+            raise Exception("Please insert user's last name")
 
-        if password is not None:
-            user.set_password(password)
+        if password is None or password == '':
+            raise Exception("Please insert a password")
+
+        user.set_first_name(first_name)
+        user.set_last_name(last_name)
+        user.set_password(password)
 
     def update_user_by_username(self, username: str, first_name: str = None, last_name: str = None,
                                 password: str = None):
