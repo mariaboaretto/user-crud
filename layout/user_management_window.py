@@ -6,15 +6,6 @@ from core.user_service import UserService
 from layout.user_info_dialog import UserInfoDialog
 
 
-# # Delete user alert:
-# delete_user_alert = QMessageBox(QMessageBox.Warning, 'WARNING!',
-# 'Are you sure you want to delete this user? This action cannot be undone.')
-# delete_user_alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-#
-# def delete_user_window():
-#     delete_user_alert.show()
-
-
 # Main screen:
 class UserManagementWindow(QWidget):
     def __init__(self, user_service: UserService):
