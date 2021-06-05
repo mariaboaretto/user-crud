@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QTableWidget, QHeaderView, QPushButton, QHBoxLayout, QWidget, QTableWidgetItem
 from core.user_service import UserService
 from layout.user_info_dialog import UserInfoDialog
+from layout.delete_user_window import DeleteWarningMsg
 
 
 class UserListTable(QTableWidget):
@@ -27,10 +28,15 @@ class UserListTable(QTableWidget):
         for user in user_list:
             edit_user_window = UserInfoDialog('Edit user', self.user_service, self, user=user,
                                               success_function=self.reload_user_list)
+            delete_user_window = DeleteWarningMsg(self.user_service, user, 'WARNING!',
+                                                  'Are you sure you want to delete this '
+                                                  'user? This action cannot be undone.', self.reload_user_list,
+                                                  self)
 
             # Action buttons:
             delete_btn = QPushButton('Delete')
             delete_btn.setStyleSheet('background-color: #b30000; color: white; font-weight: bold')
+            delete_btn.clicked.connect(delete_user_window.start)
             edit_btn = QPushButton('Edit')
             edit_btn.clicked.connect(edit_user_window.start)
             edit_btn.setStyleSheet('background-color: #0077b3; color: white; font-weight: bold')
