@@ -4,14 +4,15 @@ from core.user import User
 
 
 class DeleteWarningMsg(QMessageBox):
-    def __init__(self, user_service: UserService, user: User, window_title: str, window_txt, reload_table, parent=None):
+    def __init__(self, user_service: UserService, user: User, window_title: str, window_txt,
+                 success_function=None, parent=None):
         # Layout properties:
         super().__init__(parent)
         self.user_service = user_service
         self.window_title = window_title
         self.window_txt = window_txt
         self.user = user
-        self.reload_table = reload_table
+        self.success_function = success_function
 
         # Setting layout:
         self.__init_widget()
@@ -33,7 +34,9 @@ class DeleteWarningMsg(QMessageBox):
     def delete_user(self):
         username = self.user.get_username()
         self.user_service.remove_user_by_username(username)
-        self.reload_table()
+
+        if self.success_function is not None:
+            self.success_function()
 
     def start(self):
         self.show()

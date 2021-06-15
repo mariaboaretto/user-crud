@@ -54,6 +54,15 @@ class UserService:
             if user.get_email() == email:
                 return user
 
+    def filter_users(self, search_txt: str):
+        matching_users = []
+
+        for user in self.users:
+            if search_txt in user.get_username() or search_txt in user.get_email():
+                matching_users.append(user)
+
+        return matching_users
+
     @staticmethod
     def __set_new_info(user: User, searched_term: str, first_name: str, last_name: str,
                        password: str):
