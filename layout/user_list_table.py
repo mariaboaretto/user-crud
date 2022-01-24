@@ -20,6 +20,7 @@ class UserListTable(QTableWidget):
         self.setColumnCount(4)
         self.setHorizontalHeaderLabels(['Full name', 'Email address', 'Username', 'Actions'])
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.setStyleSheet("font-size: 11pt;")
 
     def set_user_list(self, user_list):
         self.user_list = user_list
@@ -37,11 +38,13 @@ class UserListTable(QTableWidget):
 
             # Action buttons:
             delete_btn = QPushButton('Delete')
-            delete_btn.setStyleSheet('background-color: #b30000; color: white; font-weight: bold')
+            delete_btn.setStyleSheet('background-color: #b30000; font-size: 10pt; padding: 5px; color: white;'
+                                     'font-weight: bold')
             delete_btn.clicked.connect(delete_user_window.start)
             edit_btn = QPushButton('Edit')
             edit_btn.clicked.connect(edit_user_window.start)
-            edit_btn.setStyleSheet('background-color: #0077b3; color: white; font-weight: bold')
+            edit_btn.setStyleSheet('background-color: #0077b3; font-size: 10pt; padding: 5px; color: white;'
+                                   'font-weight: bold')
 
             button_layout = QHBoxLayout()
             button_layout.addWidget(edit_btn)
