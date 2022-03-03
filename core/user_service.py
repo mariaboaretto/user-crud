@@ -1,30 +1,43 @@
 from core.user import User
+import jsonpickle
 
 
 class UserService:
-    def __init__(self):
+    def __init__(self, file_format="json"):
+        super().__init__()
         self.users = []
-        self.file = "user_list.csv"
+        self.file_format = file_format
+        self.file = "user_list." + self.file_format
+
+        if file_format != "json" and file_format != "csv":
+            raise Exception("Invalid extension name. Supported formats: json or csv")
 
         self.__load_data()
 
     def __load_data(self):
         f = open(self.file, "r")
 
-        for line in f:
-            line = line.strip("\n")
-            x = line.split(";")
-            new_user = User(x[0], x[1], x[2], x[3], x[4])
-            self.users.append(new_user)
+        if self.file_format == "csv":
+            for line in f:
+                line = line.strip("\n")
+                x = line.split(";")
+                new_user = User(x[0], x[1], x[2], x[3], x[4])
+                self.users.append(new_user)
+        else:
+            self.users = jsonpickle.decode(f.read())
 
         f.close()
 
     def __persist_data(self):
         f = open(self.file, "w")
 
-        for user in self.users:
-            f.write(f"{user.get_first_name()};{user.get_last_name()};{user.get_email()};{user.get_username()};"
-                    f"{user.get_password()}\n")
+        if self.file_format == "csv":
+            for user in self.users:
+                f.write(f"{user.get_first_name()};{user.get_last_name()};{user.get_email()};{user.get_username()};"
+                        f"{user.get_password()}\n")
+        else:
+            json_string = jsonpickle.encode(self.users, indent=1)
+            f.write(json_string)
 
         f.close()
 
