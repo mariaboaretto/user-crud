@@ -18,7 +18,7 @@ class UserListTable(QTableWidget):
 
     def __set_table(self):
         self.setColumnCount(4)
-        self.setHorizontalHeaderLabels(['Full name', 'Email address', 'Username', 'Actions'])
+        self.setHorizontalHeaderLabels(["Full name", "Email address", "Username", "Actions"])
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.setStyleSheet("font-size: 11pt;")
 

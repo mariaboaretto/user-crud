@@ -75,7 +75,7 @@ class UserInfoDialog(QDialog):
                 msg = 'User created successfully!'
 
             else:
-                self.user_service.update_user_by_username(username, first_name, last_name, password)
+                self.user_service.update_user(self.user.user_id, first_name, last_name, password)
                 msg = 'User updated successfully!'
 
             return_value = QMessageBox.information(self, 'Successful!', msg, QMessageBox.Ok)

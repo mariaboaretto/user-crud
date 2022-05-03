@@ -1,88 +1,43 @@
+from sqlite3 import SQLITE_DONE
+
 from core.user import User
-from core.user_persistence_csv import UserPersistenceCSV
-from core.user_persistence_json import UserPersistenceJson
+from core.user_repository import UserRepository
 
 
 class UserService:
-    def __init__(self, file_format="json"):
+    def __init__(self):
         super().__init__()
-
-        if file_format != "json" and file_format != "csv":
-            raise Exception("Invalid extension name. Supported formats: json or csv")
-
-        if file_format == "csv":
-            self.file_handler = UserPersistenceCSV()
-        else:
-            self.file_handler = UserPersistenceJson()
-
-        self.users = self.file_handler.load_data()
+        self.user_repo = UserRepository()
 
     def get_all_users(self) -> list[User]:
-        return self.users
+        return self.user_repo.select_all_users()
 
     def create_user(self, first_name: str, last_name: str, email: str, username: str, password: str):
-        for user in self.users:
-            if user.get_username() == username:
-                raise Exception('Username already exists: {}'.format(username))
+        if first_name is None or first_name == '':
+            raise Exception("Please insert user's first name")
 
-            if user.get_email() == email:
-                raise Exception('Email already exists: {}'.format(email))
+        if last_name is None or last_name == '':
+            raise Exception("Please insert user's last name")
 
-            if first_name is None or first_name == '':
-                raise Exception("Please insert user's first name")
+        if email is None or email == '':
+            raise Exception("Please insert user's email")
 
-            if last_name is None or last_name == '':
-                raise Exception("Please insert user's last name")
+        if username is None or username == '':
+            raise Exception("Please insert user's username")
 
-            if email is None or email == '':
-                raise Exception("Please insert user's email")
+        if password is None or password == '':
+            raise Exception("Please insert user's password")
 
-            if username is None or username == '':
-                raise Exception("Please insert user's username")
+        self.user_repo.insert_user(first_name, last_name, email, username, password)
 
-            if password is None or password == '':
-                raise Exception("Please insert user's password")
-
-        new_user = User(first_name, last_name, email, username, password)
-        self.users.append(new_user)
-        self.file_handler.persist_data(self.users)
-
-    def remove_user_by_username(self, username: str):
-        for user in self.users:
-            if user.get_username() == username:
-                self.users.remove(user)
-                self.file_handler.persist_data(self.users)
-
-    def remove_user_by_email(self, email: str):
-        for user in self.users:
-            if user.get_email() == email:
-                self.users.remove(user)
-                self.file_handler.persist_data(self.users)
-
-    def get_user_by_username(self, username: str):
-        for user in self.users:
-            if user.get_username() == username:
-                return user
-
-    def get_user_by_email(self, email: str):
-        for user in self.users:
-            if user.get_email() == email:
-                return user
+    def remove_user_by_id(self, user_id: int):
+        self.user_repo.remove_user_by_user_id(user_id)
 
     def filter_users(self, search_txt: str):
-        matching_users = []
+        return self.user_repo.filter_users_by_search_text(search_txt)
 
-        for user in self.users:
-            if search_txt in user.get_username() or search_txt in user.get_email():
-                matching_users.append(user)
-
-        return matching_users
-
-    @staticmethod
-    def __set_new_info(user: User, searched_term: str, first_name: str, last_name: str,
-                       password: str):
-        if user is None:
-            raise Exception('User does not exist: {}'.format(searched_term))
+    def update_user(self, user_id: int, first_name: str, last_name: str,
+                    password: str):
 
         if first_name is None or first_name == '':
             raise Exception("Please insert user's first name")
@@ -93,19 +48,6 @@ class UserService:
         if password is None or password == '':
             raise Exception("Please insert a password")
 
-        user.set_first_name(first_name)
-        user.set_last_name(last_name)
-        user.set_password(password)
+        self.user_repo.update_user_by_user_id(user_id, first_name, last_name, password)
 
-    def update_user_by_username(self, username: str, first_name: str = None, last_name: str = None,
-                                password: str = None):
-        user = self.get_user_by_username(username)
-
-        self.__set_new_info(user, username, first_name, last_name, password)
-        self.file_handler.persist_data(self.users)
-
-    def update_user_by_email(self, email: str, first_name: str = None, last_name: str = None, password: str = None):
-        user = self.get_user_by_email(email)
-
-        self.__set_new_info(user, email, first_name, last_name, password)
-        self.file_handler.persist_data(self.users)
+# CHA256
