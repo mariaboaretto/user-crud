@@ -79,7 +79,7 @@ class UserRepository:
         search_text = "%" + search_text + "%"
         filtered_users = []
 
-        for user in self.c.execute("""SELECT * FROM users
+        for user in self.c.execute("""SELECT user_id, f_name, l_name, email, username, psswrd FROM users
                                         WHERE f_name LIKE ? COLLATE NOCASE
                                         OR l_name LIKE ? COLLATE NOCASE
                                         OR username LIKE ? COLLATE NOCASE
@@ -90,11 +90,11 @@ class UserRepository:
 
         return filtered_users
 
-    def find_user_by_user_id(self, user_id: int) -> User:
-        self.c.execute("""SELECT * FROM users
+    def find_user_by_user_id(self, user_id: int):
+        self.c.execute("""SELECT user_id, f_name, l_name, email, username, psswrd FROM users
                           WHERE user_id = :user_id""", {"user_id": user_id})
 
         user = self.c.fetchone()
 
-        # Checar se user existe na db
-        return User(user[0], user[1], user[2], user[3], user[4], user[5])
+        if user:
+            return User(user[0], user[1], user[2], user[3], user[4], user[5])

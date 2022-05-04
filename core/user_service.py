@@ -49,5 +49,3 @@ class UserService:
             raise Exception("Please insert a password")
 
         self.user_repo.update_user_by_user_id(user_id, first_name, last_name, password)
-
-# CHA256
