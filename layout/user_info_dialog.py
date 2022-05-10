@@ -45,7 +45,7 @@ class UserInfoDialog(QDialog):
             username_field.setText(self.user.get_username())
             username_field.setStyleSheet(uneditable_field_style)
             username_field.setReadOnly(True)
-            password_field.setText(self.user.get_password())
+            password_field.setPlaceholderText("Insert new password")
 
         self.form_layout.addRow('First name:', first_name_field)
         self.form_layout.addRow('Last name:', last_name_field)

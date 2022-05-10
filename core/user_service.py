@@ -1,4 +1,4 @@
-from sqlite3 import SQLITE_DONE
+import hashlib
 
 from core.user import User
 from core.user_repository import UserRepository
@@ -8,6 +8,10 @@ class UserService:
     def __init__(self):
         super().__init__()
         self.user_repo = UserRepository()
+
+    @staticmethod
+    def __hash_string(string: str) -> str:
+        return hashlib.sha256(string.encode()).hexdigest()
 
     def get_all_users(self) -> list[User]:
         return self.user_repo.select_all_users()
@@ -28,7 +32,7 @@ class UserService:
         if password is None or password == '':
             raise Exception("Please insert user's password")
 
-        self.user_repo.insert_user(first_name, last_name, email, username, password)
+        self.user_repo.insert_user(first_name, last_name, email, username, self.__hash_string(password))
 
     def remove_user_by_id(self, user_id: int):
         self.user_repo.remove_user_by_user_id(user_id)
@@ -36,16 +40,18 @@ class UserService:
     def filter_users(self, search_txt: str):
         return self.user_repo.filter_users_by_search_text(search_txt)
 
-    def update_user(self, user_id: int, first_name: str, last_name: str,
-                    password: str):
+    def update_user(self, user_id: int, first_name: str = None, last_name: str = None,
+                    password: str = None):
 
-        if first_name is None or first_name == '':
+        if first_name == "":
             raise Exception("Please insert user's first name")
 
-        if last_name is None or last_name == '':
-            raise Exception("Please insert user's last name")
+        if last_name == "":
+            raise Exception("Please insert user's last name.")
 
-        if password is None or password == '':
-            raise Exception("Please insert a password")
+        if password == "":
+            password = None
+        else:
+            password = self.__hash_string(password)
 
         self.user_repo.update_user_by_user_id(user_id, first_name, last_name, password)
