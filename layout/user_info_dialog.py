@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QFormLayout, QDialogButtonBox, QLineEdit, QDialog, QMessageBox
+from PyQt5.QtWidgets import QFormLayout, QDialogButtonBox, QLineEdit, QDialog, QMessageBox, QLabel, QPushButton
 from core.user_service import UserService
+from layout.edit_password_window import EditPasswordWindow
 
 
 class UserInfoDialog(QDialog):
@@ -34,8 +35,12 @@ class UserInfoDialog(QDialog):
         password_field.setEchoMode(QLineEdit.Password)
 
         # Filling fields in edit user window:
-
         if self.user is not None:
+            # Edit Password btn for edit user window
+            edit_password_btn = QPushButton("Edit Password")
+            # Creating Edit Password window
+            edit_password_btn.clicked.connect(self.__create_edit_password_window)
+
             uneditable_field_style = 'background-color: #d9d9d9; color: #4d4d4d'
             first_name_field.setText(self.user.get_first_name())
             last_name_field.setText(self.user.get_last_name())
@@ -45,13 +50,18 @@ class UserInfoDialog(QDialog):
             username_field.setText(self.user.get_username())
             username_field.setStyleSheet(uneditable_field_style)
             username_field.setReadOnly(True)
-            password_field.setPlaceholderText("Insert new password")
 
         self.form_layout.addRow('First name:', first_name_field)
         self.form_layout.addRow('Last name:', last_name_field)
         self.form_layout.addRow('Email address:', email_field)
         self.form_layout.addRow('Username', username_field)
-        self.form_layout.addRow('Password:', password_field)
+
+        # Placing password field if creating user, edit password btn if editing user
+        if self.user is None:
+            self.form_layout.addRow('Password:', password_field)
+        else:
+            self.form_layout.addRow(edit_password_btn, None)
+
         self.form_layout.addWidget(buttons)
         self.setLayout(self.form_layout)
 
@@ -75,7 +85,7 @@ class UserInfoDialog(QDialog):
                 msg = 'User created successfully!'
 
             else:
-                self.user_service.update_user(self.user.user_id, first_name, last_name, password)
+                self.user_service.update_user_info(self.user.user_id, first_name, last_name)
                 msg = 'User updated successfully!'
 
             return_value = QMessageBox.information(self, 'Successful!', msg, QMessageBox.Ok)
@@ -93,6 +103,10 @@ class UserInfoDialog(QDialog):
             error_msg.setText('Error - {}'.format(e))
             error_msg.setStandardButtons(QMessageBox.Ok)
             error_msg.show()
+
+    def __create_edit_password_window(self):
+        edit_password_window = EditPasswordWindow(self, "Edit Password", self.user_service, self.user)
+        edit_password_window.start()
 
     def start(self):
         self.show()

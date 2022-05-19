@@ -1,5 +1,4 @@
 import hashlib
-
 from core.user import User
 from core.user_repository import UserRepository
 
@@ -40,8 +39,7 @@ class UserService:
     def filter_users(self, search_txt: str):
         return self.user_repo.filter_users_by_search_text(search_txt)
 
-    def update_user(self, user_id: int, first_name: str = None, last_name: str = None,
-                    password: str = None):
+    def update_user_info(self, user_id: int, first_name: str = None, last_name: str = None):
 
         if first_name == "":
             raise Exception("Please insert user's first name")
@@ -49,9 +47,14 @@ class UserService:
         if last_name == "":
             raise Exception("Please insert user's last name.")
 
-        if password == "":
-            password = None
-        else:
-            password = self.__hash_string(password)
+        self.user_repo.update_user_info(user_id, first_name, last_name)
 
-        self.user_repo.update_user_by_user_id(user_id, first_name, last_name, password)
+    def update_user_password(self, user_id: int, current_password: str, new_password: str,
+                             new_password_confirmation: str):
+        if self.__hash_string(current_password) != self.user_repo.find_user_by_user_id(user_id).get_password():
+            raise Exception("Invalid current password")
+
+        if new_password != new_password_confirmation:
+            raise Exception("Passwords do not match")
+
+        self.user_repo.update_user_password(user_id, self.__hash_string(new_password))

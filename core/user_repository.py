@@ -44,7 +44,8 @@ class UserRepository:
         with self.conn:
             self.c.execute("DELETE FROM users WHERE user_id = (:user_id)", {"user_id": user_id})
 
-    def update_user_by_user_id(self, user_id: int, first_name: str = None, last_name: str = None, password: str = None):
+    # Updates user's first name and last name information
+    def update_user_info(self, user_id: int, first_name: str = None, last_name: str = None):
         query = "UPDATE users SET "
 
         dirty = False
@@ -63,17 +64,15 @@ class UserRepository:
             query += "l_name = '{}'".format(last_name)
             dirty = True
 
-        if password is not None:
-            if dirty:
-                query += ", "
-
-            query += "psswrd = '{}'".format(password)
-            dirty = True
-
         query += " WHERE user_id = '{}'".format(user_id)
 
         with self.conn:
             self.c.execute(query)
+
+    # Update user's password
+    def update_user_password(self, user_id: int, password: str):
+        with self.conn:
+            self.c.execute("UPDATE users SET psswrd = ? WHERE user_id = ?", (password, user_id))
 
     def filter_users_by_search_text(self, search_text: str) -> list[User]:
         search_text = "%" + search_text + "%"
@@ -98,3 +97,5 @@ class UserRepository:
 
         if user:
             return User(user[0], user[1], user[2], user[3], user[4], user[5])
+        else:
+            raise Exception("User not found")
