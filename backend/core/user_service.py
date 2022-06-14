@@ -58,3 +58,6 @@ class UserService:
             raise Exception("Passwords do not match")
 
         self.user_repo.update_user_password(user_id, self.__hash_string(new_password))
+
+    def find_user_by_user_id(self, user_id: int):
+        return self.user_repo.find_user_by_user_id(user_id)

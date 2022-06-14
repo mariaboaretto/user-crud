@@ -9,7 +9,7 @@ from core.user import User
 class UserRepository:
     def __init__(self):
         # Creates the user_list.db file if it doesn't exist or connect to an existing file
-        self.conn = sqlite3.connect("../user_list.db")
+        self.conn = sqlite3.connect("../user_list.db", check_same_thread=False)
         # Creates cursor for executing queries
         self.c = self.conn.cursor()
         self.__create_user_table()
@@ -27,8 +27,23 @@ class UserRepository:
 
     def insert_user(self, first_name, last_name, email, username, password):
         with self.conn:
-            self.c.execute("INSERT INTO users (f_name, l_name, email, username, psswrd)"
-                           "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, email, username, password))
+            try:
+                self.c.execute("INSERT INTO users (f_name, l_name, email, username, psswrd)"
+                               "VALUES (?, ?, ?, ?, ?)", (first_name, last_name, email, username, password))
+            except sqlite3.IntegrityError:
+                # Checking if the username already exists
+                user = self.c.execute("""SELECT user_id, f_name, l_name, email, username, psswrd FROM users
+                          WHERE username = :username""", {"username": username}).fetchone()
+
+                if user is not None:
+                    raise Exception("Username must be unique")
+
+                # Checking if the email already exists
+                user = self.c.execute("""SELECT user_id, f_name, l_name, email, username, psswrd FROM users
+                                          WHERE email = :email""", {"email": email}).fetchone()
+
+                if user is not None:
+                    raise Exception("Email must be unique")
 
     def select_all_users(self) -> list[User]:
         user_list = []
@@ -41,6 +56,11 @@ class UserRepository:
 
     # Removes a user based on the user_id
     def remove_user_by_user_id(self, user_id: int):
+        try:
+            self.find_user_by_user_id(user_id)
+        except Exception as e:
+            raise Exception(e)
+
         with self.conn:
             self.c.execute("DELETE FROM users WHERE user_id = (:user_id)", {"user_id": user_id})
 
@@ -98,4 +118,4 @@ class UserRepository:
         if user:
             return User(user[0], user[1], user[2], user[3], user[4], user[5])
         else:
-            raise Exception("User not found")
+            raise Exception("User Not Found")
