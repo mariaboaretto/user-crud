@@ -28,6 +28,7 @@ class UserManagementWindow(QWidget):
         # Help menu:
         help_menu = QMenu('&Help', menu_bar)
         menu_bar.addMenu(help_menu)
+        menu_bar.setStyleSheet('font: 12px; padding: 3px')
         about_section = QAction('&About', help_menu)
         # about_section.triggered.connect()
         help_menu.addAction(about_section)
@@ -40,6 +41,7 @@ class UserManagementWindow(QWidget):
     def create_user_window(self, search_field):
         create_user_widget = UserInfoDialog('Create new user', self.user_service, self,
                                             lambda: self.reload_table_and_clear_filter(self.search_field))
+        create_user_widget.setStyleSheet("font-size: 11pt")
         create_user_widget.start()
 
     def search_user(self, search_text):
@@ -50,8 +52,8 @@ class UserManagementWindow(QWidget):
     def __init_box(self):
         # Outer layout box:
         title_lbl = QLabel('User Management System')
-        title_lbl.setStyleSheet('color: #000000; font-size: 20px; margin-top: 30px; margin-bottom: 20px;'
-                                'margin-left: 10px')
+        title_lbl.setStyleSheet('color: #000000; font-size: 20px; margin-top: 40px; margin-bottom: 20px;'
+                                'margin-left: 10px;')
         self.box.addWidget(title_lbl)
 
         # Toolbar:
@@ -60,14 +62,17 @@ class UserManagementWindow(QWidget):
 
         # Create user button:
         create_user_btn = QPushButton('Create new user')
-        create_user_btn.setStyleSheet('background-color: #269900; color: white; font-weight: bold')
+        create_user_btn.setStyleSheet('background-color: #269900; font-size: 10pt; color: white; font-weight: bold;'
+                                      'padding: 7px;')
         create_user_btn.clicked.connect(lambda: self.create_user_window(self.search_field))
 
         # Search user field:
-        self.search_field.setPlaceholderText('Type to search user...')
+        self.search_field.setStyleSheet('padding: 7px; font-size: 10pt')
+        self.search_field.setPlaceholderText('Type username or email to search users...')
         # Search user button:
         search_btn = QPushButton('Search')
-        search_btn.setStyleSheet('background-color: #808080; color: white; font-weight: bold')
+        search_btn.setStyleSheet('background-color: #808080; font-size: 10pt; color: white; font-weight: bold;'
+                                 'padding: 7px')
         search_btn.clicked.connect(lambda: self.search_user(self.search_field.text()))
 
         # Adding to toolbar layout:
@@ -79,6 +84,7 @@ class UserManagementWindow(QWidget):
         user_info_layout = QVBoxLayout()
         user_info_layout.setContentsMargins(10, 0, 10, 10)
         user_lst_lbl = QLabel('User list:')
+        user_lst_lbl.setStyleSheet('font-size: 11pt; padding-top: 7px')
         user_info_layout.addWidget(user_lst_lbl)
         user_info_layout.addWidget(self.table)
 

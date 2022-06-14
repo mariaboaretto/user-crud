@@ -1,10 +1,14 @@
 class User:
-    def __init__(self, first_name, last_name, email, username, password):
+    def __init__(self, user_id, first_name, last_name, email, username, password):
+        self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.username = username
         self.password = password
+
+    def get_user_id(self) -> int:
+        return self.user_id
 
     def get_username(self) -> str:
         return self.username
@@ -37,7 +41,9 @@ class User:
         return self.__repr__()
 
     def __repr__(self) -> str:
-        return "(username: {}, email: {}, password: {}, full name: {})".format(self.username, self.email, self.password, self.get_full_name())
+        return "(user_id: {}, username: {}, email: {}, password: {}, full name: {})".format(self.user_id, self.username,
+                                                                                            self.email, self.password,
+                                                                                            self.get_full_name())
 
     def __eq__(self, o: object) -> bool:
         if o is None:
