@@ -1,5 +1,3 @@
-from abc import ABC
-
 from flask import Flask, jsonify, request
 from core.user_service_factory import UserServiceFactory
 from rest.controller_interface import ControllerInterface
@@ -14,14 +12,23 @@ class UserController(ControllerInterface):
         # Get all users
         @app.get("/users/")
         def get_users():
-            all_users = []
+            users = []
+            search_txt = request.args.get("search_txt")
 
-            for user in self.user_service.get_all_users():
-                user_dict = {"user_id": user.user_id, "first_name": user.first_name, "last_name": user.last_name,
-                             "email": user.email, "username": user.username}
-                all_users.append(user_dict)
+            # If search text is none or an empty string, return all users
+            if search_txt is None or search_txt == "":
+                for user in self.user_service.get_all_users():
+                    user_dict = {"user_id": user.user_id, "first_name": user.first_name, "last_name": user.last_name,
+                                 "email": user.email, "username": user.username}
+                    users.append(user_dict)
+            # Otherwise, filter users by search text
+            else:
+                for user in self.user_service.filter_users(search_txt):
+                    user_dict = {"user_id": user.user_id, "first_name": user.first_name, "last_name": user.last_name,
+                                 "email": user.email, "username": user.username}
+                    users.append(user_dict)
 
-            return jsonify(all_users)
+            return jsonify(users)
 
         @app.get("/users/<int:user_id>/")
         def get_user_by_user_id(user_id):
@@ -79,13 +86,8 @@ class UserController(ControllerInterface):
                     info = request.get_json()
                     self.user_service.update_user_password(user_id, info["current_password"], info["new_password"],
                                                            info["password_confirmation"])
-                    return {"message": "Password updated successfully"}, 200
+                    return {"message": "Password updated successfully!"}, 200
                 except Exception as e:
                     return {"message": "{}".format(e)}, 400
 
             return {"message": "Request must be JSON"}, 400
-
-
-# - Stuff to review:
-#     - Exception for username and email constraints in user repository
-#     - Exception for removing username in user repository

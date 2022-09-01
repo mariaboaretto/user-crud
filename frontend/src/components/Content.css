@@ -1,0 +1,35 @@
+#top-section, #user-list {
+    margin: 1em;
+    border: 1px solid #bfbfbf;
+    padding: 1em;
+}
+
+#user-list{
+    overflow-y: scroll;
+    height: 600px;
+}
+
+.user-info-form {
+    margin: 1em;
+    border: 1px solid #bfbfbf;
+    padding: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btn-group {
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+}
+
+#about-page {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #bfbfbf;
+}
+
+.form-group.required label:after {
+    content: "*";
+    color: red;
+}

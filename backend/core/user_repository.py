@@ -36,14 +36,14 @@ class UserRepository:
                           WHERE username = :username""", {"username": username}).fetchone()
 
                 if user is not None:
-                    raise Exception("Username must be unique")
+                    raise Exception("Username already exists.")
 
                 # Checking if the email already exists
                 user = self.c.execute("""SELECT user_id, f_name, l_name, email, username, psswrd FROM users
                                           WHERE email = :email""", {"email": email}).fetchone()
 
                 if user is not None:
-                    raise Exception("Email must be unique")
+                    raise Exception("Email already exists.")
 
     def select_all_users(self) -> list[User]:
         user_list = []

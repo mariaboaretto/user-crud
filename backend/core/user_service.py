@@ -52,10 +52,10 @@ class UserService:
     def update_user_password(self, user_id: int, current_password: str, new_password: str,
                              new_password_confirmation: str):
         if self.__hash_string(current_password) != self.user_repo.find_user_by_user_id(user_id).get_password():
-            raise Exception("Invalid current password")
+            raise Exception("Current password is incorrect.")
 
         if new_password != new_password_confirmation:
-            raise Exception("Passwords do not match")
+            raise Exception("Passwords do not match.")
 
         self.user_repo.update_user_password(user_id, self.__hash_string(new_password))
 
