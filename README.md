@@ -40,34 +40,34 @@ Follow these instructions to set up and run the project on your local machine.
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/mariaboaretto/user-crud.git
+   $ git clone https://github.com/mariaboaretto/user-crud.git
    ```
 
 2. Navigate to the project directory:
 
     ```sh
-    cd user-crud
+    $ cd user-crud
     ```
 
 3. Install the required dependencies for the frontend:
 
     ```sh
-    cd frontend
-    npm install
+    $ cd frontend
+    $ npm install
     ```
 
 4. Create and activate a Python virtual environment (venv):
 
     ```sh
-    cd ../backend
-    python -m venv venv
-    source venv/bin/activate   # On Windows: venv\Scripts\activate
+    $ cd ../backend
+    $ python -m venv venv
+    $ source venv/bin/activate   # On Windows: venv\Scripts\activate
     ```
 
 5. Install the required Python dependencies for the backend:
 
     ```sh
-    pip install -r requirements.txt
+    $ pip install -r requirements.txt
     ```
 
 ### Usage
@@ -75,9 +75,9 @@ Follow these instructions to set up and run the project on your local machine.
 1. Run the backend server:
 
     ```sh
-    cd backend
-    source venv/bin/activate   # On Windows: venv\Scripts\activate
-    python main.py
+    $ cd backend
+    $ source venv/bin/activate   # On Windows: venv\Scripts\activate
+    $ python main.py
     ```
 
 2. The backend server should now be running, enabling communication between the frontend and the database.
@@ -85,8 +85,8 @@ Follow these instructions to set up and run the project on your local machine.
 3. Start the frontend application:
 
     ```sh
-    cd frontend
-    npm start
+    $ cd frontend
+    $ npm start
     ```
 
 4. Open your web browser and visit: 'http://localhost:3000'.
