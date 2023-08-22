@@ -1,8 +1,8 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./Content.css"
-import SearchBar from "./SearchBar";
-import CreateUserBtn from "./CreateUserBtn";
+import SearchBar from "../SearchBar/SearchBar";
+import CreateUserBtn from "../CreateUserBtn/CreateUserBtn";
+import "./TopSection.css"
 
 function TopSection(props) {
     return (

@@ -1,8 +1,9 @@
 import axios from "axios";
 import React from "react";
-import BtnGroup from "./BtnGroup";
-import ErrorMsgModal from "./ErrorMsgModal";
-import SuccessMsgModal from "./SuccessMsgModal";
+import BtnGroup from "../BtnGroup/BtnGroup";
+import ErrorMsgModal from "../ErrorMsgModal/ErrorMsgModal";
+import SuccessMsgModal from "../SuccessMsgModal/SuccessMsgModal";
+import "./EditPasswordForm.css"
 
 class EditPasswordForm extends React.Component {
     constructor(props) {

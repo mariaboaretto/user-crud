@@ -1,6 +1,7 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserTable from "./UserTable";
+import UserTable from "../UserTable/UserTable";
+import "./UserList.css"
 
 function UserList(props) {
     return (

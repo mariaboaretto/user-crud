@@ -1,7 +1,7 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
-import DelUserModal from "./DelUserModal"
+import DelUserModal from "../DelUserModal/DelUserModal"
 
 class ActionBtns extends React.Component {
     constructor(props) {

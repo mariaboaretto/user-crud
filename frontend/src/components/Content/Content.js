@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TopSection from './TopSection';
-import UserList from './UserList';
+import TopSection from '../TopSection/TopSection';
+import UserList from '../UserList/UserList';
 
 function Content() {
     const [searchTxt, setSearchTxt] = useState(null);

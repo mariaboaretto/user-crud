@@ -1,5 +1,5 @@
 import React from "react";
-import UserInfoForm from "./UserInfoForm";
+import UserInfoForm from "../components/UserInfoForm/UserInfoForm";
 
 class CreateUserPage extends React.Component {
     render() {

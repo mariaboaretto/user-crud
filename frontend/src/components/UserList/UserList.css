@@ -1,0 +1,7 @@
+#user-list{
+    overflow-y: scroll;
+    height: 600px;
+    margin: 1em;
+    border: 1px solid #bfbfbf;
+    padding: 1em;
+}

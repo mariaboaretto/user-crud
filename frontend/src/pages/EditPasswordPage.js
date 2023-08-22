@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import "./Content.css"
-import EditPasswordForm from "./EditPasswordForm";
+import EditPasswordForm from "../components/EditPasswordForm/EditPasswordForm";
 
 function EditPasswordPage() {
     const { id } = useParams();

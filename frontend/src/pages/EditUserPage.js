@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import UserInfoForm from "./UserInfoForm";
+import UserInfoForm from "../components/UserInfoForm/UserInfoForm";
 
 function EditUserPage() {
     const id = useParams().id;

@@ -1,10 +1,10 @@
 import React from "react";
-import "./Content.css"
-import BtnGroup from "./BtnGroup";
+import BtnGroup from "../BtnGroup/BtnGroup";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import SuccessMsgModal from "./SuccessMsgModal";
-import ErrorMsgModal from "./ErrorMsgModal";
+import SuccessMsgModal from "../SuccessMsgModal/SuccessMsgModal";
+import ErrorMsgModal from "../ErrorMsgModal/ErrorMsgModal";
+import "./UserInfoForm.css"
 
 class UserInfoForm extends React.Component {
     constructor(props) {

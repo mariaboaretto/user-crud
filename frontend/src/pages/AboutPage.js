@@ -1,5 +1,6 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./AboutPage.css"
 
 function AboutPage() {
     return (
@@ -7,10 +8,9 @@ function AboutPage() {
             <div className="container" id="about-div">
                 <h3>About</h3>
 
-                <p>Hey there! My name is Maria Campos and I'm from Brazil. I'm a Computer Programming student
-                    at Seneca College and I'm currently living in Toronto, Canada.
+                <p>Hey there! My name is Maria Campos. I'm a Software Engineer based in Toronto, Canada. I'm a recent graduate
+                    from Seneca College's Computer Programming program.
                 </p>
-
                 <p>
                     This simple user management system is a personal project created with the intent
                     of learning more about programming concepts such as persistant storage, databases, OOP, APIs,
@@ -30,7 +30,7 @@ function AboutPage() {
                                 </td>
                                 <td>
                                     <a className="link-dark" href="mailto:mariaboarettocampos@gmail.com">
-                                        mariaboarettocampos@gmail.com
+                                        macampos.dev@gmail.com
 
                                     </a>
                                 </td>
@@ -58,10 +58,7 @@ function AboutPage() {
                         </tbody>
                     </table>
                 </div>
-
             </div>
-
-
         </div>
     )
 }
