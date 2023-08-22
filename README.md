@@ -96,6 +96,7 @@ Follow these instructions to set up and run the project on your local machine.
 ## Technologies
 - Python: Programming language for backend server implementation.
 - Flask: Micro web framework for Python.
+- SQLite: Relational database for storing user data.
 - React, HTML, CSS, JavaScript: Frontend technologies for building the user interface.
 
 ## Authors
